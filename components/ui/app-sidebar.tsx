@@ -8,34 +8,23 @@ import {
   Archive,
   Users2,
   Bell,
+  ArchiveX,
   MessageSquare,
   ShoppingCart,
   Tag,
   Code,
   ChartLine,
-  Pencil,
 } from "lucide-react";
 import { Gmail, Outlook, Vercel } from "@/components/icons/icons";
-import { Button } from "@/components/ui/button";
-import * as React from "react";
+import { SidebarData } from "@/types";
+import React from "react";
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar";
-import { useSidebar } from "@/components/ui/sidebar";
-import { AccountSwitcher } from "./account-switcher";
-import { MailCompose } from "../mail/mail-compose";
-import { SidebarToggle } from "./sidebar-toggle";
+import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 
-// This is sample data that matches the screenshot
-
-const data = {
+const data: SidebarData = {
+  // TODO: Dynamically render user data based on auth info
   user: {
     name: "nizzy",
     email: "nizabizaher@gmail.com",
@@ -60,40 +49,39 @@ const data = {
   ],
   navMain: [
     {
-      title: "Mail",
+      title: "",
       items: [
         {
           title: "Inbox",
-          url: "#",
+          url: "/mail",
           icon: Inbox,
-          isActive: true,
           badge: 128,
         },
         {
           title: "Drafts",
-          url: "#",
+          url: "/draft",
           icon: FileText,
           badge: 9,
         },
         {
           title: "Sent",
-          url: "#",
+          url: "/mail/under-construction/sent",
           icon: SendHorizontal,
         },
         {
           title: "Junk",
-          url: "#",
-          icon: Trash2,
+          url: "/mail/under-construction/junk",
+          icon: ArchiveX,
           badge: 23,
         },
         {
           title: "Trash",
-          url: "#",
+          url: "/mail/under-construction/trash",
           icon: Trash2,
         },
         {
           title: "Archive",
-          url: "#",
+          url: "/mail/under-construction/archive",
           icon: Archive,
         },
       ],
@@ -103,31 +91,31 @@ const data = {
       items: [
         {
           title: "Social",
-          url: "#",
+          url: "/mail/under-construction/social",
           icon: Users2,
           badge: 972,
         },
         {
           title: "Updates",
-          url: "#",
+          url: "/mail/under-construction/updates",
           icon: Bell,
           badge: 342,
         },
         {
           title: "Forums",
-          url: "#",
+          url: "/mail/under-construction/forums",
           icon: MessageSquare,
           badge: 128,
         },
         {
           title: "Shopping",
-          url: "#",
+          url: "/mail/under-construction/shopping",
           icon: ShoppingCart,
           badge: 8,
         },
         {
           title: "Promotions",
-          url: "#",
+          url: "/mail/under-construction/promotions",
           icon: Tag,
           badge: 21,
         },
@@ -138,12 +126,12 @@ const data = {
       items: [
         {
           title: "Analytics",
-          url: "#",
+          url: "/mail/under-construction/analytics",
           icon: ChartLine,
         },
         {
           title: "Developers",
-          url: "#",
+          url: "/mail/under-construction/developers",
           icon: Code,
         },
       ],
@@ -152,28 +140,16 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const [composeOpen, setComposeOpen] = React.useState(false);
-  const { isMobile } = useSidebar();
-
   return (
     <>
-      {isMobile && <SidebarToggle className="fixed left-4 top-4 z-40 md:hidden" />}
       <Sidebar collapsible="icon" {...props}>
-        <SidebarHeader>
-          <AccountSwitcher accounts={data.accounts} />
+        <SidebarHeader className="mt-2 flex items-center justify-between gap-2">
+          <NavUser />
         </SidebarHeader>
         <SidebarContent>
-          <Button className="mx-3.5 mt-2 w-fit" onClick={() => setComposeOpen(true)}>
-            <Pencil className="size-4" />
-            Compose
-          </Button>
           <NavMain items={data.navMain} />
         </SidebarContent>
-        <SidebarFooter>
-          <NavUser user={data.user} />
-        </SidebarFooter>
         <SidebarRail />
-        <MailCompose open={composeOpen} onClose={() => setComposeOpen(false)} />
       </Sidebar>
     </>
   );

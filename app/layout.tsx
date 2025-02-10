@@ -1,10 +1,13 @@
-import { CommandMenu } from "@/components/ui/command-menu";
-import { AppSidebar } from "@/components/ui/app-sidebar";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/providers/providers";
 import { siteConfig } from "@/config/site-config";
+import { Toast } from "@/components/ui/toast";
 import type { Metadata } from "next";
 import "./globals.css";
+
+import MailComposeModal from "@/components/mail/mail-compose-modal";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,9 +30,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <AppSidebar />
-          {children}
-          <CommandMenu />
+          <NuqsAdapter>
+            <Suspense>
+              <MailComposeModal />
+            </Suspense>
+            {children}
+            <Toast />
+          </NuqsAdapter>
         </Providers>
       </body>
     </html>
